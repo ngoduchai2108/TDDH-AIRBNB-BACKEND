@@ -14,11 +14,11 @@ public class Test {
         return ">>> User Contents!";
     }
 
-    @GetMapping("/api/test/pm")
-    @PreAuthorize("hasRole('PM') or hasRole('ADMIN')")
-    public String projectManagementAccess() {
-        return ">>> Project Management Board";
-    }
+//    @GetMapping("/api/test/pm")
+//    @PreAuthorize("hasRole('PM') or hasRole('ADMIN')")
+//    public String projectManagementAccess() {
+//        return ">>> Project Management Board";
+//    }
 
     @GetMapping("/api/test/admin")
     @PreAuthorize("hasRole('ADMIN')")

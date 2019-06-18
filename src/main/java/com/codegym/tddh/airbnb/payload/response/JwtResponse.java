@@ -1,8 +1,7 @@
-package com.codegym.tddh.airbnb.message;
+package com.codegym.tddh.airbnb.payload.response;
 
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 

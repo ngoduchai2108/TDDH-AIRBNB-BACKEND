@@ -1,17 +1,12 @@
-package com.codegym.tddh.airbnb.message;
+package com.codegym.tddh.airbnb.payload.form;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Set;
 
 public class SignUpForm {

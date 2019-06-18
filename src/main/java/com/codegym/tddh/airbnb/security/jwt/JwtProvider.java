@@ -16,10 +16,9 @@ public class JwtProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
+    private String jwtSecret;
 
-    private String jwtSecret = "tddh";
-
-    private int jwtExpiration = 123456;
+    private int jwtExpiration;
 
     public String generateJwtToken(Authentication authentication) {
         UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();

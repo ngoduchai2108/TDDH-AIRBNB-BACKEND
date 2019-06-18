@@ -1,96 +1,119 @@
 package com.codegym.tddh.airbnb.model;
 
+import org.hibernate.annotations.NaturalId;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
-@Table(name = "user")
 @Entity
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "email"
+        })
+})
 public class User {
-    @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "email")
-    private String email;
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
-    @Column(name ="birthday")
-    private Date birthday;
-    @Column(name = "enable")
-    private boolean enable;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    @ManyToMany
-    @JoinTable(name = "user_role",
-                joinColumns = @JoinColumn(name = "user_id"),
+        @NotBlank
+        @Size(min = 3, max = 50)
+        private String firstName;
+
+        @NotBlank
+        @Size(min = 3, max = 50)
+        private String lastName;
+
+        @Temporal(TemporalType.DATE)
+        @DateTimeFormat(pattern="dd/MM/yyyy")
+        private Date birthday;
+
+        @NaturalId
+        @NotBlank
+        @Size(max = 50)
+        @Email
+        private String email;
+
+        @NotBlank
+        @Size(min = 6, max = 100)
+        private String password;
+
+        @ManyToMany(fetch = FetchType.LAZY)
+        @JoinTable(name = "user_roles",
+                joinColumns =  @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+        private Set<Role> roles = new HashSet<>();
 
-    public User() {
-    }
+        public User() {
+        }
 
-    public User(String email, String firstName, String lastName, Date birthday, boolean enable) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthday = birthday;
-        this.enable = enable;
-    }
+        public User(String firstName, String lastName, Date birthday, String email, String password) {
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.birthday = birthday;
+                this.email = email;
+                this.password = password;
+        }
 
-    public Long getId() {
-        return id;
-    }
+        public Long getId() {
+                return id;
+        }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+        public void setId(Long id) {
+                this.id = id;
+        }
 
-    public String getEmail() {
-        return email;
-    }
+        public String getFirstName() {
+                return firstName;
+        }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+        public void setFirstName(String firstName) {
+                this.firstName = firstName;
+        }
 
-    public String getFirstName() {
-        return firstName;
-    }
+        public String getLastName() {
+                return lastName;
+        }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+        public void setLastName(String lastName) {
+                this.lastName = lastName;
+        }
 
-    public String getLastName() {
-        return lastName;
-    }
+        public Date getBirthday() {
+                return birthday;
+        }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+        public void setBirthday(Date birthday) {
+                this.birthday = birthday;
+        }
 
-    public Date getBirthday() {
-        return birthday;
-    }
+        public String getEmail() {
+                return email;
+        }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
+        public void setEmail(String email) {
+                this.email = email;
+        }
 
-    public boolean isEnable() {
-        return enable;
-    }
+        public String getPassword() {
+                return password;
+        }
 
-    public void setEnable(boolean enable) {
-        this.enable = enable;
-    }
+        public void setPassword(String password) {
+                this.password = password;
+        }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
+        public Set<Role> getRoles() {
+                return roles;
+        }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+        public void setRoles(Set<Role> roles) {
+                this.roles = roles;
+        }
 }

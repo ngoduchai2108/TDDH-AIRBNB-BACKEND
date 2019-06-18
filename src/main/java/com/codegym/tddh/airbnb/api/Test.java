@@ -11,7 +11,7 @@ public class Test {
     @GetMapping("/api/test/user")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String userAccess() {
-        return ">>> User Contents!";
+        return "User Contents!";
     }
 
 //    @GetMapping("/api/test/pm")
@@ -23,6 +23,6 @@ public class Test {
     @GetMapping("/api/test/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminAccess() {
-        return ">>> Admin Contents";
+        return "Admin Contents";
     }
 }

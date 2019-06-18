@@ -31,7 +31,7 @@ public class User {
         private String lastName;
 
         @Temporal(TemporalType.DATE)
-        @DateTimeFormat(pattern="dd-MM-yyyy")
+        @DateTimeFormat(pattern="dd/MM/yyyy")
         private Date birthday;
 
         @NaturalId

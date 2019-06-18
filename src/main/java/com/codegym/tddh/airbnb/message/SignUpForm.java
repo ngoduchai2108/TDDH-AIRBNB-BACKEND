@@ -23,7 +23,7 @@ public class SignUpForm {
     @Size(min = 3, max = 50)
     private String lastName;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date birthday;
 
     @NaturalId

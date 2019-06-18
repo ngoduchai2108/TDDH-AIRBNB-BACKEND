@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -17,7 +18,11 @@ public class UserPrinciple implements UserDetails {
 
     private Long id;
 
-    private String name;
+    private String firstName;
+
+    private String lastName;
+
+    private Date birthday;
 
     private String email;
 
@@ -26,10 +31,12 @@ public class UserPrinciple implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrinciple(Long id, String name, String email,
-                         String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrinciple(Long id, String firstName, String lastName, Date birthday,
+                         String email, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
@@ -41,7 +48,9 @@ public class UserPrinciple implements UserDetails {
                 collect(Collectors.toList());
         return new UserPrinciple(
                 user.getId(),
-                user.getName(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getBirthday(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities
@@ -52,8 +61,16 @@ public class UserPrinciple implements UserDetails {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Date getBirthday() {
+        return birthday;
     }
 
     public String getEmail() {

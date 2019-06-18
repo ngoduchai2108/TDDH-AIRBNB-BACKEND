@@ -1,6 +1,7 @@
 package com.codegym.tddh.airbnb.model;
 
 import org.hibernate.annotations.NaturalId;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -23,7 +24,15 @@ public class User {
 
         @NotBlank
         @Size(min = 3, max = 50)
-        private String name;
+        private String firstName;
+
+        @NotBlank
+        @Size(min = 3, max = 50)
+        private String lastName;
+
+        @Temporal(TemporalType.DATE)
+        @DateTimeFormat(pattern="dd-MM-yyyy")
+        private Date birthday;
 
         @NaturalId
         @NotBlank
@@ -41,12 +50,10 @@ public class User {
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
         private Set<Role> roles = new HashSet<>();
 
-        public User() {
-        }
-
-
-        public User(String name, String email, String password) {
-                this.name = name;
+        public User(String firstName, String lastName,Date birthday, String email, String password) {
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.birthday = birthday;
                 this.email = email;
                 this.password = password;
         }
@@ -59,12 +66,28 @@ public class User {
                 this.id = id;
         }
 
-        public String getName() {
-                return name;
+        public String getFirstName() {
+                return firstName;
         }
 
-        public void setName(String name) {
-                this.name = name;
+        public void setFirstName(String firstName) {
+                this.firstName = firstName;
+        }
+
+        public String getLastName() {
+                return lastName;
+        }
+
+        public void setLastName(String lastName) {
+                this.lastName = lastName;
+        }
+
+        public Date getBirthday() {
+                return birthday;
+        }
+
+        public void setBirthday(Date birthday) {
+                this.birthday = birthday;
         }
 
         public String getEmail() {

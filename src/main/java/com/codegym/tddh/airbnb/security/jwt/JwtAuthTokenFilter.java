@@ -1,6 +1,6 @@
 package com.codegym.tddh.airbnb.security.jwt;
 
-import com.codegym.tddh.airbnb.security.userDetailsServiceImpl.UserDetailsServiceImpl;
+import com.codegym.tddh.airbnb.security.userDetailsImpl.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

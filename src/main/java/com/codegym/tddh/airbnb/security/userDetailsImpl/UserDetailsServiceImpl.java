@@ -1,4 +1,4 @@
-package com.codegym.tddh.airbnb.security.userDetailsServiceImpl;
+package com.codegym.tddh.airbnb.security.userDetailsImpl;
 
 import com.codegym.tddh.airbnb.model.User;
 import com.codegym.tddh.airbnb.service.UserService;

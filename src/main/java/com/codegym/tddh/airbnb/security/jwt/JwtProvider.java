@@ -1,7 +1,7 @@
 package com.codegym.tddh.airbnb.security.jwt;
 
 import io.jsonwebtoken.*;
-import com.codegym.tddh.airbnb.security.userDetailsServiceImpl.UserPrinciple;
+import com.codegym.tddh.airbnb.security.userDetailsImpl.UserPrinciple;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;

@@ -1,13 +1,11 @@
-package com.codegym.tddh.airbnb.security;
+package com.codegym.tddh.airbnb.security.jwt;
 
 import io.jsonwebtoken.*;
-import com.codegym.tddh.airbnb.service.UserPrinciple;
+import com.codegym.tddh.airbnb.security.userDetailsServiceImpl.UserPrinciple;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 

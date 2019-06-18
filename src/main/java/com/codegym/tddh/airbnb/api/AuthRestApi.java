@@ -7,9 +7,9 @@ import com.codegym.tddh.airbnb.message.SignUpForm;
 import com.codegym.tddh.airbnb.model.Role;
 import com.codegym.tddh.airbnb.model.RoleName;
 import com.codegym.tddh.airbnb.model.User;
-import com.codegym.tddh.airbnb.repository.RoleRepository;
-import com.codegym.tddh.airbnb.repository.UserRepository;
-import com.codegym.tddh.airbnb.security.JwtProvider;
+import com.codegym.tddh.airbnb.security.jwt.JwtProvider;
+import com.codegym.tddh.airbnb.service.RoleService;
+import com.codegym.tddh.airbnb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +33,10 @@ public class AuthRestApi {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
-    RoleRepository roleRepository;
+    RoleService roleService;
 
     @Autowired
     PasswordEncoder encoder;
@@ -60,12 +60,12 @@ public class AuthRestApi {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userService.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userService.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
@@ -80,20 +80,20 @@ public class AuthRestApi {
         strRoles.forEach(role -> {
             switch (role) {
                 case "admin":
-                    Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
+                    Role adminRole = roleService.findByName(RoleName.ROLE_ADMIN)
                             .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
                     roles.add(adminRole);
 
                     break;
                 default:
-                    Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                    Role userRole = roleService.findByName(RoleName.ROLE_USER)
                             .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
                     roles.add(userRole);
             }
         });
 
         user.setRoles(roles);
-        userRepository.save(user);
+        userService.save(user);
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
     }

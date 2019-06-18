@@ -1,4 +1,4 @@
-package com.codegym.tddh.airbnb.service;
+package com.codegym.tddh.airbnb.security.userDetailsServiceImpl;
 
 import com.codegym.tddh.airbnb.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;

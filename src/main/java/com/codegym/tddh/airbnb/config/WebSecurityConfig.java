@@ -1,8 +1,8 @@
 package com.codegym.tddh.airbnb.config;
 
-import com.codegym.tddh.airbnb.security.JwtAuthEntryPoint;
-import com.codegym.tddh.airbnb.security.JwtAuthTokenFilter;
-import com.codegym.tddh.airbnb.service.UserDetailsServiceImpl;
+import com.codegym.tddh.airbnb.security.jwt.JwtAuthEntryPoint;
+import com.codegym.tddh.airbnb.security.jwt.JwtAuthTokenFilter;
+import com.codegym.tddh.airbnb.security.userDetailsServiceImpl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

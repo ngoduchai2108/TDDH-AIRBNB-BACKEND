@@ -1,7 +1,7 @@
-package com.codegym.tddh.airbnb.service;
+package com.codegym.tddh.airbnb.security.userDetailsServiceImpl;
 
 import com.codegym.tddh.airbnb.model.User;
-import com.codegym.tddh.airbnb.repository.UserRepository;
+import com.codegym.tddh.airbnb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(
+        User user = userService.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("User Not Found with -> email : " + email));
 
         return UserPrinciple.build(user);

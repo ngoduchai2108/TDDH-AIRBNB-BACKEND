@@ -1,9 +1,9 @@
 package com.codegym.tddh.airbnb.api;
 
-import com.codegym.tddh.airbnb.message.JwtResponse;
-import com.codegym.tddh.airbnb.message.LoginForm;
-import com.codegym.tddh.airbnb.message.ResponseMessage;
-import com.codegym.tddh.airbnb.message.SignUpForm;
+import com.codegym.tddh.airbnb.payload.response.JwtResponse;
+import com.codegym.tddh.airbnb.payload.form.LoginForm;
+import com.codegym.tddh.airbnb.payload.response.ResponseMessage;
+import com.codegym.tddh.airbnb.payload.form.SignUpForm;
 import com.codegym.tddh.airbnb.model.Role;
 import com.codegym.tddh.airbnb.model.RoleName;
 import com.codegym.tddh.airbnb.model.User;
@@ -55,24 +55,20 @@ public class AuthRestApi {
         String jwt = jwtProvider.generateJwtToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(),
+                userDetails.getAuthorities()));
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
         if (userService.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
-                    HttpStatus.BAD_REQUEST);
-        }
-
-        if (userService.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
+            return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
         // Creating user's account
-        User user = new User(signUpRequest.getFirstName(),signUpRequest.getLastName(),signUpRequest.getBirthday(), signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+        User user = new User(signUpRequest.getFirstName(),signUpRequest.getLastName(),signUpRequest.getBirthday(),
+                signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();

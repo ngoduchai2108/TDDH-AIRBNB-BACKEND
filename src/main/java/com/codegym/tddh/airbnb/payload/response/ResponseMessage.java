@@ -1,4 +1,4 @@
-package com.codegym.tddh.airbnb.message;
+package com.codegym.tddh.airbnb.payload.response;
 
 public class ResponseMessage {
     private String message;

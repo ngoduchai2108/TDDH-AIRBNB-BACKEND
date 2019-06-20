@@ -1,4 +1,4 @@
-package com.codegym.tddh.airbnb.message;
+package com.codegym.tddh.airbnb.payload.form;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

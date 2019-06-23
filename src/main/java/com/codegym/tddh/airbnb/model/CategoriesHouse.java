@@ -6,21 +6,21 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "categuries")
-public class CateguriesHouse {
+@Table(name = "categories")
+public class CategoriesHouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
     @Size(min = 6, max = 50)
-    private String categuriesName;
+    private String categoriesName;
 
     @OneToMany(targetEntity = House.class)
     private List<House> houses;
 
-    public CateguriesHouse(@NotBlank @Size(min = 6, max = 50) String categuriesName) {
-        this.categuriesName = categuriesName;
+    public CategoriesHouse(String categoriesName) {
+        this.categoriesName = categoriesName;
     }
 
     public Long getId() {
@@ -31,11 +31,11 @@ public class CateguriesHouse {
         this.id = id;
     }
 
-    public String getCateguriesName() {
-        return categuriesName;
+    public String getCategoriesName() {
+        return categoriesName;
     }
 
-    public void setCateguriesName(String categuriesName) {
-        this.categuriesName = categuriesName;
+    public void setCategoriesName(String categoriesName) {
+        this.categoriesName = categoriesName;
     }
 }

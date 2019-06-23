@@ -21,7 +21,7 @@ public class House {
     private String address;
 
     @NotBlank
-    private Integer quantityBadroom;
+    private Integer quantityBedroom;
 
     @NotBlank
     private Integer quantityBathroom;
@@ -34,8 +34,8 @@ public class House {
     private String price;
 
     @ManyToOne
-    @JoinColumn(name = "categuriesHouse_id")
-    private CateguriesHouse categuriesHouse;
+    @JoinColumn(name = "categoriesHouse_id")
+    private CategoriesHouse categoriesHouse;
 
     @OneToMany(targetEntity = ImageHouse.class)
     private List<ImageHouse> imageHouses;
@@ -43,17 +43,17 @@ public class House {
     public House() {
     }
 
-    public House(@NotBlank @Size(min = 3, max = 50) String houseName, @NotBlank @Size(min = 3, max = 50) String address,
-                 @NotBlank Integer quantityBadroom, @NotBlank Integer quantityBathroom,
-                 @NotBlank @Size(min = 10, max = 100) String description,
-                 @NotBlank String price, CateguriesHouse categuriesHouse) {
+    public House(String houseName, String address,
+                 Integer quantityBedroom, Integer quantityBathroom,
+                 String description,
+                 String price, CategoriesHouse categoriesHouse) {
         this.houseName = houseName;
         this.address = address;
-        this.quantityBadroom = quantityBadroom;
+        this.quantityBedroom = quantityBedroom;
         this.quantityBathroom = quantityBathroom;
         this.description = description;
         this.price = price;
-        this.categuriesHouse = categuriesHouse;
+        this.categoriesHouse = categoriesHouse;
     }
 
     public Long getId() {
@@ -80,12 +80,12 @@ public class House {
         this.address = address;
     }
 
-    public Integer getQuantityBadroom() {
-        return quantityBadroom;
+    public Integer getQuantityBedroom() {
+        return quantityBedroom;
     }
 
-    public void setQuantityBadroom(Integer quantityBadroom) {
-        this.quantityBadroom = quantityBadroom;
+    public void setQuantityBedroom(Integer quantityBedroom) {
+        this.quantityBedroom = quantityBedroom;
     }
 
     public Integer getQuantityBathroom() {
@@ -112,11 +112,11 @@ public class House {
         this.price = price;
     }
 
-    public CateguriesHouse getCateguriesHouse() {
-        return categuriesHouse;
+    public CategoriesHouse getCategoriesHouse() {
+        return categoriesHouse;
     }
 
-    public void setCateguriesHouse(CateguriesHouse categuriesHouse) {
-        this.categuriesHouse = categuriesHouse;
+    public void setCategoriesHouse(CategoriesHouse categoriesHouse) {
+        this.categoriesHouse = categoriesHouse;
     }
 }

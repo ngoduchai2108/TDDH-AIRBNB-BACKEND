@@ -22,7 +22,7 @@ public class ImageHouse {
     public ImageHouse() {
     }
 
-    public ImageHouse(@NotBlank @Size(min = 3, max = 50) String imageName, House house) {
+    public ImageHouse(String imageName, House house) {
         this.imageName = imageName;
         this.house = house;
     }

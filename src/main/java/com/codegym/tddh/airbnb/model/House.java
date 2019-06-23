@@ -31,7 +31,7 @@ public class House {
     private String description;
 
     @NotBlank
-    private String price;
+    private Double price;
 
     @ManyToOne
     @JoinColumn(name = "categoriesHouse_id")
@@ -46,7 +46,7 @@ public class House {
     public House(String houseName, String address,
                  Integer quantityBedroom, Integer quantityBathroom,
                  String description,
-                 String price, CategoriesHouse categoriesHouse) {
+                 Double price, CategoriesHouse categoriesHouse) {
         this.houseName = houseName;
         this.address = address;
         this.quantityBedroom = quantityBedroom;
@@ -104,11 +104,11 @@ public class House {
         this.description = description;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

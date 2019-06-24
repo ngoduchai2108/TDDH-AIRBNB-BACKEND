@@ -20,25 +20,22 @@ public class House {
     @Size(min = 3, max = 50)
     private String address;
 
-    @NotBlank
     private Integer quantityBedroom;
 
-    @NotBlank
     private Integer quantityBathroom;
 
     @NotBlank
     @Size(min = 10, max = 100)
     private String description;
 
-    @NotBlank
     private Double price;
 
     @ManyToOne
     @JoinColumn(name = "categoriesHouse_id")
     private CategoriesHouse categoriesHouse;
 
-    @OneToMany(targetEntity = ImageHouse.class)
-    private List<ImageHouse> imageHouses;
+    @OneToMany(targetEntity = Image.class)
+    private List<Image> images;
 
     public House() {
     }

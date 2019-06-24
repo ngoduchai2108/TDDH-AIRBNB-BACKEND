@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "images")
-public class ImageHouse {
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,15 +15,19 @@ public class ImageHouse {
     @Size(min = 3, max = 50)
     private String imageName;
 
+    @Lob
+    private byte[] data;
+
     @ManyToOne
     @JoinColumn(name = "house_id")
     private House house;
 
-    public ImageHouse() {
+    public Image() {
     }
 
-    public ImageHouse(String imageName, House house) {
+    public Image( String imageName, byte[] data, House house) {
         this.imageName = imageName;
+        this.data = data;
         this.house = house;
     }
 
@@ -41,6 +45,14 @@ public class ImageHouse {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
     public House getHouse() {

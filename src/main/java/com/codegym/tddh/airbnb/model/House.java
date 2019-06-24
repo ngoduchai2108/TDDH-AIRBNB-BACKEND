@@ -34,6 +34,10 @@ public class House {
     @JoinColumn(name = "categoriesHouse_id")
     private Categories categories;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(targetEntity = Image.class)
     private List<Image> images;
 

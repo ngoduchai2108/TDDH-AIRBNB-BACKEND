@@ -124,4 +124,12 @@ public class House {
     public void setImages(List<Image> images) {
         this.images = images;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

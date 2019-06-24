@@ -14,7 +14,7 @@ public class House {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    private String houseName;
+    private String name;
 
     @NotBlank
     @Size(min = 3, max = 50)
@@ -32,7 +32,7 @@ public class House {
 
     @ManyToOne
     @JoinColumn(name = "categoriesHouse_id")
-    private CategoriesHouse categoriesHouse;
+    private Categories categories;
 
     @OneToMany(targetEntity = Image.class)
     private List<Image> images;
@@ -40,17 +40,13 @@ public class House {
     public House() {
     }
 
-    public House(String houseName, String address,
-                 Integer quantityBedroom, Integer quantityBathroom,
-                 String description,
-                 Double price, CategoriesHouse categoriesHouse) {
-        this.houseName = houseName;
+    public House( String name, String address, Integer quantityBedroom, Integer quantityBathroom,  String description, Double price) {
+        this.name = name;
         this.address = address;
         this.quantityBedroom = quantityBedroom;
         this.quantityBathroom = quantityBathroom;
         this.description = description;
         this.price = price;
-        this.categoriesHouse = categoriesHouse;
     }
 
     public Long getId() {
@@ -61,12 +57,12 @@ public class House {
         this.id = id;
     }
 
-    public String getHouseName() {
-        return houseName;
+    public String getName() {
+        return name;
     }
 
-    public void setHouseName(String houseName) {
-        this.houseName = houseName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
@@ -109,11 +105,19 @@ public class House {
         this.price = price;
     }
 
-    public CategoriesHouse getCategoriesHouse() {
-        return categoriesHouse;
+    public Categories getCategories() {
+        return categories;
     }
 
-    public void setCategoriesHouse(CategoriesHouse categoriesHouse) {
-        this.categoriesHouse = categoriesHouse;
+    public void setCategories(Categories categories) {
+        this.categories = categories;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

@@ -13,7 +13,7 @@ public class Image {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    private String imageName;
+    private String name;
 
     @Lob
     private byte[] data;
@@ -25,10 +25,9 @@ public class Image {
     public Image() {
     }
 
-    public Image( String imageName, byte[] data, House house) {
-        this.imageName = imageName;
+    public Image( String name, byte[] data) {
+        this.name = name;
         this.data = data;
-        this.house = house;
     }
 
     public Long getId() {
@@ -39,12 +38,12 @@ public class Image {
         this.id = id;
     }
 
-    public String getImageName() {
-        return imageName;
+    public String getName() {
+        return name;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public byte[] getData() {

@@ -1,20 +1,28 @@
 package com.codegym.tddh.airbnb.api;
 
 import com.codegym.tddh.airbnb.model.House;
+import com.codegym.tddh.airbnb.model.User;
+import com.codegym.tddh.airbnb.security.userDetailsImpl.UserPrinciple;
 import com.codegym.tddh.airbnb.service.HouseService;
+import com.codegym.tddh.airbnb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
 public class ApiHouseController {
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     HouseService houseService;
@@ -30,10 +38,17 @@ public class ApiHouseController {
 
     @PostMapping("/house")
     public ResponseEntity<Void> createHouse(@Valid @RequestBody House house,
-                                         UriComponentsBuilder uriComponentsBuilder) {
+                                            UriComponentsBuilder uriComponentsBuilder,
+                                            HttpServletRequest request) {
 //        if (houseService.existsByName(house.getName())) {
 //            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 //        }
+        String jwt = request.getHeader("TDDH");
+        Object  userPrinciple = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long id = ((UserPrinciple)userPrinciple).getId();
+        User user = userService.findById(id);
+        house.setUser(user);
+
         houseService.save(house);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(uriComponentsBuilder.path("/house/{id}").buildAndExpand(house.getId()).toUri());

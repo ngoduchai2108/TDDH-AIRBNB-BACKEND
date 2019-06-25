@@ -62,3 +62,4 @@ public class Image {
         this.house = house;
     }
 }
+

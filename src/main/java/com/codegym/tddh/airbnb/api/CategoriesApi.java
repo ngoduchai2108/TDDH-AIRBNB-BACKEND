@@ -46,19 +46,6 @@ public class CategoriesApi {
 
     //-------------------Create a Categories--------------------------------------------------------
     @PostMapping("/categories")
-//    public ResponseEntity<?> createCategories(@Valid @RequestBody CreateCategoriesForm createCategoriesRequest) {
-//        if (categoriesHouseService.existsByName(createCategoriesRequest.getName())) {
-//            return new ResponseEntity<>(new ResponseMessage("Fail -> Categories Name is already taken!"),
-//                    HttpStatus.BAD_REQUEST);
-//        }
-//
-//        // Creating Categories House
-//        Categories categories = new Categories(createCategoriesRequest.getName());
-//        categoriesHouseService.save(categories);
-//
-//        return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
-//    }
-
     public ResponseEntity<?> createCategories(@Valid @RequestBody CreateCategoriesForm createCategoriesRequest, UriComponentsBuilder ucBuilder) {
         if (categoriesHouseService.existsByName(createCategoriesRequest.getName())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Categories Name is already taken!"),
@@ -73,7 +60,7 @@ public class CategoriesApi {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
     //------------------- Update a Categories --------------------------------------------------------
-    @PostMapping("/categories/{id}")
+    @PutMapping("/categories/{id}")
     public ResponseEntity<Categories> updateCategories(@PathVariable("id") long id,
                                                        @RequestBody UpdateCategoriesForm updateCategoriesRequest) {
         System.out.println("Updating Categories " + id);
@@ -91,7 +78,7 @@ public class CategoriesApi {
     }
 
     //------------------- Delete a Categories --------------------------------------------------------
-    @PostMapping("/categories/{id}/delete")
+    @DeleteMapping("/categories/{id}/delete")
     public ResponseEntity<Categories> deleteCategories(@PathVariable("id") long id) {
         System.out.println("Fetching & Deleting Categories with id " + id);
 

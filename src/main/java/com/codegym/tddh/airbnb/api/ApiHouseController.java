@@ -27,9 +27,21 @@ public class ApiHouseController {
     @Autowired
     HouseService houseService;
 
-    @GetMapping("/house")
+    @GetMapping("/houses")
     public ResponseEntity<List<House>> listAllHouse(){
         List<House> houses = houseService.findAll();
+        if (houses.isEmpty()) {
+            return new ResponseEntity<List<House>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<House>>(houses,HttpStatus.OK);
+    }
+
+    @GetMapping("/house")
+    public ResponseEntity<List<House>> listHouseById(){
+        Object  userPrinciple = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long id = ((UserPrinciple)userPrinciple).getId();
+        User user = userService.findById(id);
+        List<House> houses = houseService.findAllByUser(user);
         if (houses.isEmpty()) {
             return new ResponseEntity<List<House>>(HttpStatus.NO_CONTENT);
         }
@@ -40,9 +52,6 @@ public class ApiHouseController {
     public ResponseEntity<Void> createHouse(@Valid @RequestBody House house,
                                             UriComponentsBuilder uriComponentsBuilder,
                                             HttpServletRequest request) {
-//        if (houseService.existsByName(house.getName())) {
-//            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-//        }
         String jwt = request.getHeader("TDDH");
         Object  userPrinciple = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = ((UserPrinciple)userPrinciple).getId();

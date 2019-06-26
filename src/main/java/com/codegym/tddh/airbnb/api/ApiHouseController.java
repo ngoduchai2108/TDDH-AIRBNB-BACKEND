@@ -51,6 +51,15 @@ public class ApiHouseController {
         return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
     }
 
+    @GetMapping("/house/{id}")
+    public ResponseEntity<House> getHouseId(@PathVariable ("id") Long id){
+        House house  = houseService.findById(id);
+        if (house == null) {
+            return new ResponseEntity<House>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<House>(house, HttpStatus.OK);
+    }
+
     @PostMapping("/house")
     public ResponseEntity<Long> createHouse(@Valid @RequestBody House house,
                                             UriComponentsBuilder uriComponentsBuilder,

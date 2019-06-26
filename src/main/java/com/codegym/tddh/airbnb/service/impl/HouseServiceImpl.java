@@ -1,6 +1,7 @@
 package com.codegym.tddh.airbnb.service.impl;
 
 import com.codegym.tddh.airbnb.model.House;
+import com.codegym.tddh.airbnb.model.User;
 import com.codegym.tddh.airbnb.repository.HouseRepository;
 import com.codegym.tddh.airbnb.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,11 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public List<House> findAll() {
         return houseRepository.findAll();
+    }
+
+    @Override
+    public List<House> findAllByUser(User user) {
+        return houseRepository.findAllByUser(user);
     }
 
     @Override

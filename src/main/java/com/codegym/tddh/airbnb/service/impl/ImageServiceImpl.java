@@ -45,4 +45,19 @@ public class ImageServiceImpl implements ImageService {
             throw new FileStorageException("Could not store file " + imageName + ". Please try again!", ex);
         }
     }
+
+    @Override
+    public void deleteAllByHouse(House house) {
+        imageRepository.deleteAllByHouse(house);
+    }
+
+    @Override
+    public Image findById(Long id) {
+      return  imageRepository.findById(id).get();
+    }
+
+    @Override
+    public void remove(Long id) {
+        imageRepository.deleteById(id);
+    }
 }

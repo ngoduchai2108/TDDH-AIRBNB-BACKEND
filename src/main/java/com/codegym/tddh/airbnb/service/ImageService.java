@@ -4,6 +4,8 @@ import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.Image;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface ImageService {
     Image getFile(Long id);
 
@@ -14,4 +16,6 @@ public interface ImageService {
     Image findById(Long id);
 
     void remove(Long id);
+
+    List<Image> findAllByHouse (House house);
 }

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -60,4 +61,11 @@ public class ImageServiceImpl implements ImageService {
     public void remove(Long id) {
         imageRepository.deleteById(id);
     }
+
+    @Override
+    public List<Image> findAllByHouse(House house) {
+        return imageRepository.findAllByHouse(house);
+    }
+
+
 }

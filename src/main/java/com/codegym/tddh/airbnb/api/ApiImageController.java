@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
@@ -52,6 +57,16 @@ public class ApiImageController {
                 .body(new ByteArrayResource(image.getData()));
     }
 
+        @GetMapping("/download-all-file/{id}")
+    public ResponseEntity<List<Long>> listAllImage(@PathVariable("id") Long id) {
+        House house = houseService.findById(id);
+        List<Image> images = imageService.findAllByHouse(house);
+        ArrayList listImgId = new ArrayList();
+        for(Image img:images){
+            listImgId.add(img.getId());
+        }
+        return new ResponseEntity<List<Long>>(listImgId,HttpStatus.OK);
+    }
     @DeleteMapping("delete-file/{id}")
     public ResponseEntity<Image> deleteImage(@PathVariable("id") Long id) {
         Image image = imageService.findById(id);

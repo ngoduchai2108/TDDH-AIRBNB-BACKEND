@@ -1,7 +1,9 @@
 package com.codegym.tddh.airbnb.api;
 
+import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.Image;
 import com.codegym.tddh.airbnb.payload.response.UploadFileResponse;
+import com.codegym.tddh.airbnb.service.HouseService;
 import com.codegym.tddh.airbnb.service.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +27,15 @@ public class ApiImageController {
 
     @Autowired
     private ImageService imageService;
-    @PostMapping("/uploadFile/{houseid}")
+
+    @Autowired
+    private HouseService houseService;
+
+    @PostMapping("/upload-file/{houseid}")
     public UploadFileResponse uploadFileResponse(@RequestParam("file") MultipartFile file, @PathVariable("houseid") Long id) {
         Image image = imageService.storeFile(file, id);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
+                .path("/download-file/")
                 .path(String.valueOf(image.getId()))
                 .toUriString();
 
@@ -36,12 +43,32 @@ public class ApiImageController {
                 file.getContentType(), file.getSize());
     }
 
-    @GetMapping("/downloadFile/{id}")
+    @GetMapping("/download-file/{id}")
     public ResponseEntity<Resource> downloadFile(@PathVariable Long id) {
         Image image = imageService.getFile(id);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(image.getType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; name=\"" + image.getName() + "\"")
                 .body(new ByteArrayResource(image.getData()));
+    }
+
+    @DeleteMapping("delete-file/{id}")
+    public ResponseEntity<Image> deleteImage(@PathVariable("id") Long id) {
+        Image image = imageService.findById(id);
+        if (image == null) {
+            return new ResponseEntity<Image>(HttpStatus.NOT_FOUND);
+        }
+        imageService.remove(id);
+        return new ResponseEntity<Image>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("delete-all-file/{id}")
+    public ResponseEntity<Void> deleteAllImage(@PathVariable("id") Long id) {
+        House house = houseService.findById(id);
+        if (house == null) {
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+        imageService.deleteAllByHouse(house);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

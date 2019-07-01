@@ -2,20 +2,17 @@ package com.codegym.tddh.airbnb.service;
 
 import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.Image;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface ImageService {
-    Image getFile(Long id);
 
-    Image storeFile(MultipartFile file, Long id);
+    void storeFile(MultipartFile file);
 
-    void deleteAllByHouse(House house);
+    void save (Image image);
 
-    Image findById(Long id);
+    Resource loadFile (String name);
 
-    void remove(Long id);
-
-    List<Image> findAllByHouse (House house);
 }

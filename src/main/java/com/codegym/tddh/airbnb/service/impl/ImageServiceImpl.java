@@ -1,20 +1,20 @@
 package com.codegym.tddh.airbnb.service.impl;
 
-import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.Image;
-import com.codegym.tddh.airbnb.payload.exception.FileStorageException;
-import com.codegym.tddh.airbnb.payload.exception.MyFileNotFoundException;
 import com.codegym.tddh.airbnb.repository.ImageRepository;
 import com.codegym.tddh.airbnb.service.HouseService;
 import com.codegym.tddh.airbnb.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -25,47 +25,37 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     ImageRepository imageRepository;
 
-    @Override
-    public Image getFile(Long id) {
-        return imageRepository.findById(id)
-                .orElseThrow(() -> new MyFileNotFoundException("File not found with id " + id));
-    }
+    private  final Path root = Paths.get("/home/tri/Desktop/test/TDDH-AIRBNB-BACKEND/src/main/resources/upload-dir/");
+
+
+
 
     @Override
-    public Image storeFile(MultipartFile file, Long id) {
-        String imageName = StringUtils.cleanPath(file.getOriginalFilename());
+    public void storeFile(MultipartFile file) {
         try {
-            if (imageName.contains("..")) {
-                throw new FileStorageException("Sorry! Image name contains invalid path sequence " + imageName);
-            }
-            House house = houseService.findById(id);
-            Image image = new Image(imageName, file.getContentType(), file.getBytes());
-            image.setHouse(house);
-            return imageRepository.save(image);
-        } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + imageName + ". Please try again!", ex);
+            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+        }catch (IOException ex) {
+            throw  new  RuntimeException("FAIL!");
         }
     }
 
     @Override
-    public void deleteAllByHouse(House house) {
-        imageRepository.deleteAllByHouse(house);
+    public void save(Image image) {
+        imageRepository.save(image);
     }
 
     @Override
-    public Image findById(Long id) {
-      return  imageRepository.findById(id).get();
+    public org.springframework.core.io.Resource loadFile(String name) {
+        try {
+            Path file = root.resolve(name);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return  resource;
+            }else  {
+                throw  new RuntimeException("FAIL!");
+            }
+        }catch (MalformedURLException e) {
+            throw new RuntimeException("FAIL!");
+        }
     }
-
-    @Override
-    public void remove(Long id) {
-        imageRepository.deleteById(id);
-    }
-
-    @Override
-    public List<Image> findAllByHouse(House house) {
-        return imageRepository.findAllByHouse(house);
-    }
-
-
 }

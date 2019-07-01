@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
@@ -58,12 +61,32 @@ public class ApiImageController {
                 .body(file);
     }
     @DeleteMapping(value = "/delete-all-file/{id}")
-    public ResponseEntity<Void> deleteAllByHouse (@PathVariable("id") Long houseId){
-        House house =houseService.findById(houseId);
-        if (house == null){
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-        }
-        imageService.deleteAllByHouse(house);
+    public ResponseEntity<Void> deleteAllByHouse (@PathVariable("id") Long houseid){
+       House house =houseService.findById(houseid);
+       if (house ==null){
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+       imageService.deleteAllByHouse(house);
         return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @GetMapping("/download-all-file/{id}")
+    public ResponseEntity<List<Long>> listAllImage(@PathVariable("id") Long id) {
+        House house = houseService.findById(id);
+        List<Image> images = imageService.findAllByHouse(house);
+        ArrayList listImgId = new ArrayList();
+        for(Image img:images){
+            listImgId.add(img.getId());
+        }
+        return new ResponseEntity<List<Long>>(listImgId,HttpStatus.OK);
+    }
+    @DeleteMapping("delete-file/{id}")
+    public ResponseEntity<Image> deleteImage(@PathVariable("id") Long id) {
+        Image image = imageService.findById(id);
+        if (image == null) {
+            return new ResponseEntity<Image>(HttpStatus.NOT_FOUND);
+        }
+        imageService.deleteById(id);
+        return new ResponseEntity<Image>(HttpStatus.OK);
     }
 }

@@ -18,4 +18,10 @@ public interface ImageService {
     Resource getFileById(Long id);
 
     void deleteAllByHouse(House house);
+
+    void deleteById(Long id);
+
+    Image findById(Long id);
+
+    List<Image> findAllByHouse(House house);
 }

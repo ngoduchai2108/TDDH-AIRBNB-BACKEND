@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -69,5 +70,20 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void deleteAllByHouse(House house) {
         imageRepository.deleteAllByHouse(house);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        imageRepository.deleteById(id);
+    }
+
+    @Override
+    public Image findById(Long id) {
+        return imageRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Image> findAllByHouse(House house) {
+        return imageRepository.findAllByHouse(house);
     }
 }

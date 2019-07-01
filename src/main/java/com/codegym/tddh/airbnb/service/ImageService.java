@@ -15,4 +15,5 @@ public interface ImageService {
 
     Resource loadFile (String name);
 
+    Resource getFileById(Long id);
 }

@@ -25,7 +25,7 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     ImageRepository imageRepository;
 
-    private  final Path root = Paths.get("/home/tri/Desktop/test/TDDH-AIRBNB-BACKEND/src/main/resources/upload-dir/");
+    private  final Path root = Paths.get("/home/dinh/Desktop/TDDH/backend-v1/TDDH-AIRBNB-BACKEND/src/main/resources/upload-dir/");
 
 
 
@@ -45,7 +45,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public org.springframework.core.io.Resource loadFile(String name) {
+    public Resource loadFile(String name) {
         try {
             Path file = root.resolve(name);
             Resource resource = new UrlResource(file.toUri());
@@ -57,5 +57,11 @@ public class ImageServiceImpl implements ImageService {
         }catch (MalformedURLException e) {
             throw new RuntimeException("FAIL!");
         }
+    }
+
+    @Override
+    public Resource getFileById(Long id) {
+        Image image =imageRepository.getOne(id);
+        return loadFile(image.getName());
     }
 }

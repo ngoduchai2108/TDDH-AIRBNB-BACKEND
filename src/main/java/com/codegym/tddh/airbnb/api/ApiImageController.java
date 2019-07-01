@@ -47,12 +47,23 @@ public class ApiImageController {
             return new ResponseEntity<Void>(HttpStatus.EXPECTATION_FAILED);
         }
     }
+
     @GetMapping(value = "/download-file/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Resource> getFile(@PathVariable("id") Long id) {
 
         Resource file = imageService.getFileById(id);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + file.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
+    }
+    @DeleteMapping(value = "/delete-all-file/{id}")
+    public ResponseEntity<Void> deleteAllByHouse (@PathVariable("id") Long houseId){
+        House house =houseService.findById(houseId);
+        if (house == null){
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+        imageService.deleteAllByHouse(house);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.codegym.tddh.airbnb.service.impl;
 
+import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.Image;
 import com.codegym.tddh.airbnb.repository.ImageRepository;
 import com.codegym.tddh.airbnb.service.HouseService;
@@ -63,5 +64,10 @@ public class ImageServiceImpl implements ImageService {
     public Resource getFileById(Long id) {
         Image image =imageRepository.getOne(id);
         return loadFile(image.getName());
+    }
+
+    @Override
+    public void deleteAllByHouse(House house) {
+        imageRepository.deleteAllByHouse(house);
     }
 }

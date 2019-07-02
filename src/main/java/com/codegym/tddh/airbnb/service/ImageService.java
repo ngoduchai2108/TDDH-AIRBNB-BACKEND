@@ -15,4 +15,13 @@ public interface ImageService {
 
     Resource loadFile (String name);
 
+    Resource getFileById(Long id);
+
+    void deleteAllByHouse(House house);
+
+    void deleteById(Long id);
+
+    Image findById(Long id);
+
+    List<Image> findAllByHouse(House house);
 }

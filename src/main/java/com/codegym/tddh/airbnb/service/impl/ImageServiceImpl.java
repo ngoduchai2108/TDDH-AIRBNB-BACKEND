@@ -1,5 +1,6 @@
 package com.codegym.tddh.airbnb.service.impl;
 
+import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.Image;
 import com.codegym.tddh.airbnb.repository.ImageRepository;
 import com.codegym.tddh.airbnb.service.HouseService;
@@ -15,6 +16,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -25,7 +27,7 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     ImageRepository imageRepository;
 
-    private  final Path root = Paths.get("/home/tri/Desktop/test/TDDH-AIRBNB-BACKEND/src/main/resources/upload-dir/");
+    private  final Path root = Paths.get("/home/dinh/Desktop/TDDH/backend-v1/TDDH-AIRBNB-BACKEND/src/main/resources/upload-dir/");
 
 
 
@@ -45,7 +47,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public org.springframework.core.io.Resource loadFile(String name) {
+    public Resource loadFile(String name) {
         try {
             Path file = root.resolve(name);
             Resource resource = new UrlResource(file.toUri());
@@ -57,5 +59,31 @@ public class ImageServiceImpl implements ImageService {
         }catch (MalformedURLException e) {
             throw new RuntimeException("FAIL!");
         }
+    }
+
+    @Override
+    public Resource getFileById(Long id) {
+        Image image =imageRepository.getOne(id);
+        return loadFile(image.getName());
+    }
+
+    @Override
+    public void deleteAllByHouse(House house) {
+        imageRepository.deleteAllByHouse(house);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        imageRepository.deleteById(id);
+    }
+
+    @Override
+    public Image findById(Long id) {
+        return imageRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Image> findAllByHouse(House house) {
+        return imageRepository.findAllByHouse(house);
     }
 }

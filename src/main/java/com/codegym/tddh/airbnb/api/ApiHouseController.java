@@ -36,9 +36,14 @@ public class ApiHouseController {
         }
         return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
     }
+    @PostMapping("/")
+    public ResponseEntity<List<House>> listAllHouseBySearchValue() {
+        List<House> houses = houseService.findAllBySearchValue();
+        return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
+    }
 
     @GetMapping("/house")
-    public ResponseEntity<List<House>> listHouseById() {
+    public ResponseEntity<List<House>> listHouseByUser() {
         Object userPrinciple = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = ((UserPrinciple) userPrinciple).getId();
         User user = userService.findById(id);
@@ -104,5 +109,4 @@ public class ApiHouseController {
         houseService.remove(id);
         return new ResponseEntity<House>(HttpStatus.NO_CONTENT);
     }
-
 }

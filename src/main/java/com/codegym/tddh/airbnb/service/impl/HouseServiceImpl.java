@@ -44,4 +44,9 @@ public class HouseServiceImpl implements HouseService {
     public Boolean existsByName(String name) {
         return houseRepository.existsByName(name);
     }
+
+    @Override
+    public List<House> findAllBySearchValue() {
+        return houseRepository.findAllBySearchValue("s",1,null,1000.0,4.0);
+    }
 }

@@ -17,4 +17,6 @@ public interface HouseService {
     void remove(Long id);
 
     Boolean existsByName (String name);
+
+    List<House> findAllBySearchValue();
 }

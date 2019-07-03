@@ -27,9 +27,8 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     ImageRepository imageRepository;
 
-    private  final Path root = Paths.get("/home/dinh/Desktop/TDDH/ddddddddddddddddd/TDDH-AIRBNB-BACKEND/src/main/resources/upload-dir/");
-
-
+    private  final Path root =
+            Paths.get("/home/dinh/Desktop/TDDH/ddddddddddddddddd/TDDH-AIRBNB-BACKEND/src/main/resources/upload-dir/");
 
 
     @Override

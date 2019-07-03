@@ -5,8 +5,6 @@ import com.codegym.tddh.airbnb.model.User;
 import com.codegym.tddh.airbnb.security.userDetailsImpl.UserPrinciple;
 import com.codegym.tddh.airbnb.service.HouseService;
 import com.codegym.tddh.airbnb.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -52,8 +50,8 @@ public class ApiHouseController {
     }
 
     @GetMapping("/house/{id}")
-    public ResponseEntity<House> getHouseId(@PathVariable ("id") Long id){
-        House house  = houseService.findById(id);
+    public ResponseEntity<House> getHouseId(@PathVariable("id") Long id) {
+        House house = houseService.findById(id);
         if (house == null) {
             return new ResponseEntity<House>(HttpStatus.NOT_FOUND);
         }
@@ -69,12 +67,12 @@ public class ApiHouseController {
         Long id = ((UserPrinciple) userPrinciple).getId();
         User user = userService.findById(id);
         house.setUser(user);
-
+        house.setRented(false);
         houseService.save(house);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(uriComponentsBuilder.path("/house/{id}").buildAndExpand(house.getId()).toUri());
-        return new ResponseEntity<Long>(house.getId() ,headers, HttpStatus.CREATED);
+        return new ResponseEntity<Long>(house.getId(), headers, HttpStatus.CREATED);
     }
 
     @PutMapping("/house/{id}")

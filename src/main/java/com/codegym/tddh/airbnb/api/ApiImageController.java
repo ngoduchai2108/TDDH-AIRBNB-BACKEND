@@ -34,9 +34,7 @@ public class ApiImageController {
     @PostMapping(value = "/upload-file/{id}")
     public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("id") Long id) {
         if (file == null) {
-            System.out.println("aaaaaaaaaaa");
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-
         }
         try {
             Image image = new Image();

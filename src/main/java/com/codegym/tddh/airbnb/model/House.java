@@ -24,6 +24,8 @@ public class House {
 
     private Integer quantityBathroom;
 
+    private Boolean isRented;
+
     @NotBlank
     @Size(min = 10, max = 100)
     private String description;
@@ -44,13 +46,15 @@ public class House {
     public House() {
     }
 
-    public House( String name, String address, Integer quantityBedroom, Integer quantityBathroom,  String description, Double price) {
+    public House( String name, String address, Integer quantityBedroom,
+                  Integer quantityBathroom,  String description, Double price, Boolean isRented) {
         this.name = name;
         this.address = address;
         this.quantityBedroom = quantityBedroom;
         this.quantityBathroom = quantityBathroom;
         this.description = description;
         this.price = price;
+        this.isRented=isRented;
     }
 
     public Long getId() {
@@ -131,5 +135,13 @@ public class House {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getRented() {
+        return isRented;
+    }
+
+    public void setRented(Boolean rented) {
+        isRented = rented;
     }
 }

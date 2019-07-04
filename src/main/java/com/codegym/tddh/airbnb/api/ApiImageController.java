@@ -58,6 +58,16 @@ public class ApiImageController {
                         "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
+    @GetMapping(value = "/download-first/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<Resource> getFirstFile(@PathVariable("id") Long id) {
+        House house = houseService.findById(id);
+        Resource file = imageService.findFirstByHouse(house);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
+    }
+
     @DeleteMapping(value = "/delete-all-file/{id}")
     public ResponseEntity<Void> deleteAllByHouse (@PathVariable("id") Long houseid){
        House house =houseService.findById(houseid);

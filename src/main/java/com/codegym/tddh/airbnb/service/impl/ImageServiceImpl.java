@@ -85,4 +85,10 @@ public class ImageServiceImpl implements ImageService {
     public List<Image> findAllByHouse(House house) {
         return imageRepository.findAllByHouse(house);
     }
+
+    @Override
+    public Resource findFirstByHouse(House house) {
+       Image image = imageRepository.findFirstByHouse(house);
+       return loadFile(image.getName());
+    }
 }

@@ -21,7 +21,4 @@ public interface HouseRepository extends JpaRepository<House, Long> {
     List<House> findAllBySearchValue(@Param("address") String address,@Param("quantityBathroom")Integer quantityBathroom,
                                      @Param("quantityBedroom") Integer quantityBedroom, @Param("maxPrice") Double maxPrice,
                                      @Param("minPrice")Double minPrice);
-
-
-
 }

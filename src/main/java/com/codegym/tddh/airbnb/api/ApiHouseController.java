@@ -2,6 +2,7 @@ package com.codegym.tddh.airbnb.api;
 
 import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.User;
+import com.codegym.tddh.airbnb.payload.form.SearchHouseForm;
 import com.codegym.tddh.airbnb.security.userDetailsImpl.UserPrinciple;
 import com.codegym.tddh.airbnb.service.HouseService;
 import com.codegym.tddh.airbnb.service.UserService;
@@ -28,6 +29,7 @@ public class ApiHouseController {
     @Autowired
     HouseService houseService;
 
+//----------------------Get All House----------------------------
     @GetMapping("/houses")
     public ResponseEntity<List<House>> listAllHouse() {
         List<House> houses = houseService.findAll();
@@ -36,9 +38,22 @@ public class ApiHouseController {
         }
         return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
     }
-    @PostMapping("/")
-    public ResponseEntity<List<House>> listAllHouseBySearchValue() {
-        List<House> houses = houseService.findAllBySearchValue();
+// ----------------------Get all house not Rented ----------------
+    @GetMapping("/houses/status/false")
+    public ResponseEntity<List<House>> listAllHouseByRented() {
+        List<House> houses = houseService.findAllByNotRented();
+        if (houses.isEmpty()) {
+            return new ResponseEntity<List<House>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
+    }
+
+    @PostMapping("/houses/search")
+    public ResponseEntity<List<House>> listAllHouseBySearchValue(@RequestBody SearchHouseForm searchHouseForm) {
+        List<House> houses = houseService.findAllBySearchValue(searchHouseForm);
+        if(houses.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
     }
 
@@ -62,6 +77,7 @@ public class ApiHouseController {
         }
         return new ResponseEntity<House>(house, HttpStatus.OK);
     }
+
 
     @PostMapping("/house")
     public ResponseEntity<Long> createHouse(@Valid @RequestBody House house,

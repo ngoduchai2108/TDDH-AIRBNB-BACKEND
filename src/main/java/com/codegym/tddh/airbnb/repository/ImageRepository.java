@@ -13,4 +13,5 @@ import java.util.List;
 public interface ImageRepository extends JpaRepository<Image, Long> {
     void deleteAllByHouse(House house);
     List<Image> findAllByHouse (House house);
+    Image findFirstByHouse(House house);
 }

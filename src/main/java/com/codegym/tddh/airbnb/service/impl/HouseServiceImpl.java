@@ -2,6 +2,7 @@ package com.codegym.tddh.airbnb.service.impl;
 
 import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.User;
+import com.codegym.tddh.airbnb.payload.form.SearchHouseForm;
 import com.codegym.tddh.airbnb.repository.HouseRepository;
 import com.codegym.tddh.airbnb.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,21 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public Boolean existsByName(String name) {
         return houseRepository.existsByName(name);
+    }
+
+    @Override
+    public List<House> findAllBySearchValue(SearchHouseForm searchHouseForm) {
+        return houseRepository.findAllBySearchValue(searchHouseForm.getAddress(),
+                searchHouseForm.getQuantityBathroom(),searchHouseForm.getQuantityBedroom(),
+                searchHouseForm.getMaxPrice(),searchHouseForm.getMinPrice());
+    }
+
+    @Override
+    public List<House> findAllByNotRented() {
+        return houseRepository.findAllByIsRented(false);
+    }
+    @Override
+    public List<House> findAllBySearchValue() {
+        return houseRepository.findAllBySearchValue("s",1,null,1000.0,4.0);
     }
 }

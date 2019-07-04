@@ -2,11 +2,10 @@ package com.codegym.tddh.airbnb.api;
 
 import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.User;
+import com.codegym.tddh.airbnb.payload.form.SearchHouseForm;
 import com.codegym.tddh.airbnb.security.userDetailsImpl.UserPrinciple;
 import com.codegym.tddh.airbnb.service.HouseService;
 import com.codegym.tddh.airbnb.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,6 +29,7 @@ public class ApiHouseController {
     @Autowired
     HouseService houseService;
 
+//----------------------Get All House----------------------------
     @GetMapping("/houses")
     public ResponseEntity<List<House>> listAllHouse() {
         List<House> houses = houseService.findAll();
@@ -38,9 +38,27 @@ public class ApiHouseController {
         }
         return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
     }
+// ----------------------Get all house not Rented ----------------
+    @GetMapping("/houses/status/false")
+    public ResponseEntity<List<House>> listAllHouseByRented() {
+        List<House> houses = houseService.findAllByNotRented();
+        if (houses.isEmpty()) {
+            return new ResponseEntity<List<House>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
+    }
+
+    @PostMapping("/houses/search")
+    public ResponseEntity<List<House>> listAllHouseBySearchValue(@RequestBody SearchHouseForm searchHouseForm) {
+        List<House> houses = houseService.findAllBySearchValue(searchHouseForm);
+        if(houses.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
+    }
 
     @GetMapping("/house")
-    public ResponseEntity<List<House>> listHouseById() {
+    public ResponseEntity<List<House>> listHouseByUser() {
         Object userPrinciple = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long id = ((UserPrinciple) userPrinciple).getId();
         User user = userService.findById(id);
@@ -52,13 +70,14 @@ public class ApiHouseController {
     }
 
     @GetMapping("/house/{id}")
-    public ResponseEntity<House> getHouseId(@PathVariable ("id") Long id){
-        House house  = houseService.findById(id);
+    public ResponseEntity<House> getHouseId(@PathVariable("id") Long id) {
+        House house = houseService.findById(id);
         if (house == null) {
             return new ResponseEntity<House>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<House>(house, HttpStatus.OK);
     }
+
 
     @PostMapping("/house")
     public ResponseEntity<Long> createHouse(@Valid @RequestBody House house,
@@ -69,12 +88,12 @@ public class ApiHouseController {
         Long id = ((UserPrinciple) userPrinciple).getId();
         User user = userService.findById(id);
         house.setUser(user);
-
+        house.setRented(false);
         houseService.save(house);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(uriComponentsBuilder.path("/house/{id}").buildAndExpand(house.getId()).toUri());
-        return new ResponseEntity<Long>(house.getId() ,headers, HttpStatus.CREATED);
+        return new ResponseEntity<Long>(house.getId(), headers, HttpStatus.CREATED);
     }
 
     @PutMapping("/house/{id}")
@@ -106,5 +125,4 @@ public class ApiHouseController {
         houseService.remove(id);
         return new ResponseEntity<House>(HttpStatus.NO_CONTENT);
     }
-
 }

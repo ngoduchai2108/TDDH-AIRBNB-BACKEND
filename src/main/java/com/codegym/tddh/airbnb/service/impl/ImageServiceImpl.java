@@ -27,9 +27,8 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     ImageRepository imageRepository;
 
-    private  final Path root = Paths.get("/home/dinh/Desktop/TDDH/backend-v1/TDDH-AIRBNB-BACKEND/src/main/resources/upload-dir/");
-
-
+    private  final Path root =
+            Paths.get("/home/dinh/Desktop/TDDH/ddddddddddddddddd/TDDH-AIRBNB-BACKEND/src/main/resources/upload-dir/");
 
 
     @Override
@@ -85,5 +84,11 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public List<Image> findAllByHouse(House house) {
         return imageRepository.findAllByHouse(house);
+    }
+
+    @Override
+    public Resource findFirstByHouse(House house) {
+       Image image = imageRepository.findFirstByHouse(house);
+       return loadFile(image.getName());
     }
 }

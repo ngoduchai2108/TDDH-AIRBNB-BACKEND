@@ -91,4 +91,9 @@ public class ImageServiceImpl implements ImageService {
        Image image = imageRepository.findFirstByHouse(house);
        return loadFile(image.getName());
     }
+
+    @Override
+    public Boolean existsByHouse(House house) {
+        return imageRepository.existsByHouse(house);
+    }
 }

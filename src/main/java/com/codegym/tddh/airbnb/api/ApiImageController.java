@@ -40,10 +40,10 @@ public class ApiImageController {
             Image image = new Image();
             House house = houseService.findById(id);
             image.setHouse(house);
-            String fileName = Math.floor(Math.random()*100000)+file.getOriginalFilename();
+            String fileName = Math.floor(Math.random() * 100000) + file.getOriginalFilename();
             image.setName(fileName);
             imageService.save(image);
-            imageService.storeFile(file,fileName);
+            imageService.storeFile(file, fileName);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<Void>(HttpStatus.EXPECTATION_FAILED);
@@ -59,9 +59,13 @@ public class ApiImageController {
                         "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);
     }
+
     @GetMapping(value = "/download-first/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Resource> getFirstFile(@PathVariable("id") Long id) {
         House house = houseService.findById(id);
+        if (!imageService.existsByHouse(house)) {
+            return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+        }
         Resource file = imageService.findFirstByHouse(house);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
@@ -70,12 +74,12 @@ public class ApiImageController {
     }
 
     @DeleteMapping(value = "/delete-all-file/{id}")
-    public ResponseEntity<Void> deleteAllByHouse (@PathVariable("id") Long houseid){
-       House house =houseService.findById(houseid);
-       if (house ==null){
-           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       }
-       imageService.deleteAllByHouse(house);
+    public ResponseEntity<Void> deleteAllByHouse(@PathVariable("id") Long houseid) {
+        House house = houseService.findById(houseid);
+        if (house == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        imageService.deleteAllByHouse(house);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
@@ -84,11 +88,12 @@ public class ApiImageController {
         House house = houseService.findById(id);
         List<Image> images = imageService.findAllByHouse(house);
         ArrayList listImgId = new ArrayList();
-        for(Image img:images){
+        for (Image img : images) {
             listImgId.add(img.getId());
         }
-        return new ResponseEntity<List<Long>>(listImgId,HttpStatus.OK);
+        return new ResponseEntity<List<Long>>(listImgId, HttpStatus.OK);
     }
+
     @DeleteMapping("delete-file/{id}")
     public ResponseEntity<Image> deleteImage(@PathVariable("id") Long id) {
         Image image = imageService.findById(id);

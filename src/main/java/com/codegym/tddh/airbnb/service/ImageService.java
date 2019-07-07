@@ -26,4 +26,6 @@ public interface ImageService {
     List<Image> findAllByHouse(House house);
 
     Resource findFirstByHouse(House house);
+
+    Boolean existsByHouse(House house);
 }

@@ -40,9 +40,10 @@ public class ApiImageController {
             Image image = new Image();
             House house = houseService.findById(id);
             image.setHouse(house);
-            image.setName(file.getOriginalFilename());
+            String fileName = Math.floor(Math.random()*100000)+file.getOriginalFilename();
+            image.setName(fileName);
             imageService.save(image);
-            imageService.storeFile(file);
+            imageService.storeFile(file,fileName);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<Void>(HttpStatus.EXPECTATION_FAILED);

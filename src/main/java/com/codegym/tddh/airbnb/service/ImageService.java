@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ImageService {
 
-    void storeFile(MultipartFile file);
+    void storeFile(MultipartFile file, String fileName);
 
     void save (Image image);
 

@@ -32,9 +32,9 @@ public class ImageServiceImpl implements ImageService {
 
 
     @Override
-    public void storeFile(MultipartFile file) {
+    public void storeFile(MultipartFile file, String fileName) {
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), this.root.resolve(fileName));
         }catch (IOException ex) {
             throw  new  RuntimeException("FAIL!");
         }

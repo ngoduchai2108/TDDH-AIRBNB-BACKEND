@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -43,6 +44,12 @@ public class User {
         @NotBlank
         @Size(min = 6, max = 100)
         private String password;
+
+        @OneToMany(targetEntity = House.class)
+        private List<House> houses;
+
+        @OneToMany(targetEntity = Booking.class)
+        private List<Booking> bookings;
 
         @ManyToMany(fetch = FetchType.LAZY)
         @JoinTable(name = "user_roles",
@@ -115,5 +122,21 @@ public class User {
 
         public void setRoles(Set<Role> roles) {
                 this.roles = roles;
+        }
+
+        public List<House> getHouses() {
+                return houses;
+        }
+
+        public void setHouses(List<House> houses) {
+                this.houses = houses;
+        }
+
+        public List<Booking> getBookings() {
+                return bookings;
+        }
+
+        public void setBookings(List<Booking> bookings) {
+                this.bookings = bookings;
         }
 }

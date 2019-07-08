@@ -113,6 +113,7 @@ public class ApiHouseController {
         currentHouse.setDescription(house.getDescription());
         currentHouse.setPrice(house.getPrice());
         currentHouse.setCategories(house.getCategories());
+        currentHouse.setRented(house.getRented());
 
         houseService.save(currentHouse);
         return new ResponseEntity<House>(currentHouse, HttpStatus.OK);

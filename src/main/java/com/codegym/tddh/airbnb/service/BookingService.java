@@ -13,5 +13,5 @@ public interface BookingService {
     List<Booking> findAllByUser(User user);
     Boolean userCanCancelBooking(String startDateStr);
     Boolean validateBooking(String startDateStr, String endDateStr );
-    Booking findByHouse(House house);
+    List<Booking> findAllByHouse(House house);
 }

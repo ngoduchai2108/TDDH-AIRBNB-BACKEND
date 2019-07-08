@@ -23,8 +23,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking findByHouse(House house){
-        return bookingRepository.findByHouse(house);
+    public List<Booking> findAllByHouse(House house){
+        return bookingRepository.findAllByHouse(house);
     }
     @Override
     public void save(Booking booking) {

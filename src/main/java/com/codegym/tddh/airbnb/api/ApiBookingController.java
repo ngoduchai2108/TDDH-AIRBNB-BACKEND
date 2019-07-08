@@ -50,7 +50,7 @@ public class ApiBookingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Booking> getHouseId(@PathVariable("id") Long id) {
+    public ResponseEntity<Booking> findById(@PathVariable("id") Long id) {
         Booking booking = bookingService.findById(id);
         if (booking == null) {
             return new ResponseEntity<Booking>(HttpStatus.NOT_FOUND);
@@ -58,10 +58,24 @@ public class ApiBookingController {
         return new ResponseEntity<Booking>(booking, HttpStatus.OK);
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<Booking>> listBookingByUser() {
         User user = getUserByAuth();
         List<Booking> bookingList = bookingService.findAllByUser(user);
+        if (bookingList.isEmpty()) {
+            return new ResponseEntity<List<Booking>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
+    }
+
+    @GetMapping("/by-houses/{id}")
+    public ResponseEntity<List<Booking>> listBookingByHouseId(@PathVariable Long id){
+        User user =getUserByAuth();
+        House house = houseService.findById(id);
+        if (!house.getUser().getId().equals(user.getId())){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        List<Booking> bookingList = bookingService.findAllByHouse(house);
         if (bookingList.isEmpty()) {
             return new ResponseEntity<List<Booking>>(HttpStatus.NO_CONTENT);
         }

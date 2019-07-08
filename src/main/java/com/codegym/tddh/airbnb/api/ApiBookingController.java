@@ -72,9 +72,12 @@ public class ApiBookingController {
     public ResponseEntity<?> cancelBooking(@PathVariable Long id) {
         Booking booking = bookingService.findById(id);
         User user = getUserByAuth();
-        if (!user.getId().equals(booking.getUser().getId()))return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (!(user.getId().equals(booking.getUser().getId())))return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         if (bookingService.userCanCancelBooking(booking.getStartDate())) {
             bookingService.remove(booking);
+            House house = booking.getHouse();
+            house.setRented(false);
+            houseService.save(house);
         } else {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Cannot Cancel Booking"),
                     HttpStatus.BAD_REQUEST);

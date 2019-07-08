@@ -62,7 +62,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Boolean validateBooking(String startDateStr, String endDateStr) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = null, enDate = null;
         Date oderDate = new Date();
         try {

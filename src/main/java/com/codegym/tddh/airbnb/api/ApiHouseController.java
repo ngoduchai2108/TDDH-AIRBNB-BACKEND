@@ -3,6 +3,7 @@ package com.codegym.tddh.airbnb.api;
 import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.User;
 import com.codegym.tddh.airbnb.payload.form.SearchHouseForm;
+import com.codegym.tddh.airbnb.payload.response.ResponseMessage;
 import com.codegym.tddh.airbnb.security.userDetailsImpl.UserPrinciple;
 import com.codegym.tddh.airbnb.service.HouseService;
 import com.codegym.tddh.airbnb.service.UserService;
@@ -29,7 +30,7 @@ public class ApiHouseController {
     @Autowired
     HouseService houseService;
 
-//----------------------Get All House----------------------------
+    //----------------------Get All House----------------------------
     @GetMapping("/houses")
     public ResponseEntity<List<House>> listAllHouse() {
         List<House> houses = houseService.findAll();
@@ -38,7 +39,8 @@ public class ApiHouseController {
         }
         return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
     }
-// ----------------------Get all house not Rented ----------------
+
+    // ----------------------Get all house not Rented ----------------
     @GetMapping("/houses/status/false")
     public ResponseEntity<List<House>> listAllHouseByRented() {
         List<House> houses = houseService.findAllByNotRented();
@@ -51,7 +53,7 @@ public class ApiHouseController {
     @PostMapping("/houses/search")
     public ResponseEntity<List<House>> listAllHouseBySearchValue(@RequestBody SearchHouseForm searchHouseForm) {
         List<House> houses = houseService.findAllBySearchValue(searchHouseForm);
-        if(houses.isEmpty()){
+        if (houses.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<List<House>>(houses, HttpStatus.OK);
@@ -117,12 +119,12 @@ public class ApiHouseController {
     }
 
     @DeleteMapping("/house/{id}")
-    public ResponseEntity<House> deleteHouse(@PathVariable("id") long id) {
+    public ResponseEntity<?> deleteHouse(@PathVariable("id") long id) {
         House house = houseService.findById(id);
-        if (house == null) {
-            return new ResponseEntity<House>(HttpStatus.NOT_FOUND);
-        }
+        if (house.getRented())
+            return new ResponseEntity<>(new ResponseMessage("Please Delete All Booking of this house first"),
+                    HttpStatus.BAD_REQUEST);
         houseService.remove(id);
-        return new ResponseEntity<House>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<House>(HttpStatus.OK);
     }
 }

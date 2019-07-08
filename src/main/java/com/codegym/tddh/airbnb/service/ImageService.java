@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ImageService {
 
-    void storeFile(MultipartFile file);
+    void storeFile(MultipartFile file, String fileName);
 
     void save (Image image);
 
@@ -26,4 +26,6 @@ public interface ImageService {
     List<Image> findAllByHouse(House house);
 
     Resource findFirstByHouse(House house);
+
+    Boolean existsByHouse(House house);
 }

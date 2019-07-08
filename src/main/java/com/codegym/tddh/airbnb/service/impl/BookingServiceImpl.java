@@ -28,7 +28,7 @@ public class BookingServiceImpl implements BookingService {
     }
     @Override
     public void save(Booking booking) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date now =new Date();
         String oderDate= sdf.format(now);
         booking.setOderDate(oderDate);
@@ -47,7 +47,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Boolean userCanCancelBooking(String startDateStr) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = null;
         Date now = new Date();
         try {

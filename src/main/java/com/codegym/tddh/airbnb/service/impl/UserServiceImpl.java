@@ -2,8 +2,10 @@ package com.codegym.tddh.airbnb.service.impl;
 
 import com.codegym.tddh.airbnb.model.User;
 import com.codegym.tddh.airbnb.repository.UserRepository;
+import com.codegym.tddh.airbnb.security.userDetailsImpl.UserPrinciple;
 import com.codegym.tddh.airbnb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -33,4 +35,12 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
         userRepository.save(user);
     }
+
+    @Override
+    public User getUserByAuth() {
+        Object userPrinciple = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long user_id = ((UserPrinciple) userPrinciple).getId();
+        return findById(user_id);
+    }
+
 }

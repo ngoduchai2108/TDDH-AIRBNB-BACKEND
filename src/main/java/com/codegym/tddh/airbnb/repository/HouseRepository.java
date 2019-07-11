@@ -17,7 +17,7 @@ public interface HouseRepository extends JpaRepository<House, Long> {
     @Query("SELECT h FROM House h WHERE (:address is null or h.address LIKE CONCAT('%',:address,'%') ) and (:quantityBathroom is null"
             + " or h.quantityBathroom = :quantityBathroom) and (:quantityBedroom is null"
             +" or h.quantityBedroom = :quantityBedroom) and (:maxPrice is null"
-            + " or h.price < :maxPrice) and (:minPrice is null or h.price > :minPrice ) and (h.isRented = false )")
+            + " or h.price <= :maxPrice) and (:minPrice is null or h.price >= :minPrice ) and (h.isRented = false )")
     List<House> findAllBySearchValue(@Param("address") String address,@Param("quantityBathroom")Integer quantityBathroom,
                                      @Param("quantityBedroom") Integer quantityBedroom, @Param("maxPrice") Double maxPrice,
                                      @Param("minPrice")Double minPrice);

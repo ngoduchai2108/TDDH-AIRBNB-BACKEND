@@ -4,6 +4,7 @@ import com.codegym.tddh.airbnb.model.Booking;
 import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.User;
 
+import java.util.Date;
 import java.util.List;
 
 public interface BookingService {
@@ -14,4 +15,8 @@ public interface BookingService {
     Boolean userCanCancelBooking(String startDateStr);
     Boolean validateBooking(String startDateStr, String endDateStr );
     List<Booking> findAllByHouse(House house);
+
+    List<Booking> findAllHistoryByUser(User user);
+    Date parseStringToDate(String dateStr);
+    void upDateCheckIn(Booking booking);
 }

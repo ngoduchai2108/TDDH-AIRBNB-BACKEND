@@ -29,6 +29,18 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public List<Booking> findAllByHouseAndMonth(House house, String month, String year) {
+        List<Booking> allBookingByHouse = bookingRepository.findAllByHouse(house);
+        List<Booking> bookingList = new ArrayList<>();
+        for (Booking booking: allBookingByHouse) {
+            if (booking.getStartDate().substring(0,4).equals(year)&&booking.getStartDate().substring(5,7).equals(month)){
+                bookingList.add(booking);
+            }
+        }
+        return bookingList;
+    }
+
+    @Override
     public List<Booking> findAllHistoryByUser(User user) {
         List<Booking>listAllBooking=bookingRepository.findAllByUser(user);
         List<Booking>bookingListHistory = new ArrayList<Booking>();

@@ -15,6 +15,7 @@ public interface BookingService {
     Boolean userCanCancelBooking(String startDateStr);
     Boolean validateBooking(String startDateStr, String endDateStr );
     List<Booking> findAllByHouse(House house);
+    List<Booking> findAllByHouseAndMonth(House house, String month ,  String year);
 
     List<Booking> findAllHistoryByUser(User user);
     Date parseStringToDate(String dateStr);

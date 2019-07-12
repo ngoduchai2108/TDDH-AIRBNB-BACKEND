@@ -28,7 +28,7 @@ public class ApiEvaluationController {
     @Autowired
     EvaluationService evaluationService;
 
-    @PostMapping("/api/auth/evaluations/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<?> createEvaluation(@Valid @RequestBody Evaluation evaluation,
                                         @PathVariable("id") Long id) {
         User user = userService.getUserByAuth();

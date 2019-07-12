@@ -5,6 +5,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 public class Evaluation {
@@ -12,9 +13,6 @@ public class Evaluation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Max(5)
-    @Min(1)
     private int rating;
 
     @NotBlank
@@ -27,6 +25,9 @@ public class Evaluation {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(targetEntity = Reply.class)
+    private List<Reply> replies;
 
     public Evaluation() {
     }
@@ -74,5 +75,13 @@ public class Evaluation {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
     }
 }

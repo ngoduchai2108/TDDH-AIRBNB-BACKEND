@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface EvaluationRepository extends JpaRepository<Evaluation,Long> {
     List<Evaluation> findAllByHouseOrderById(House house);
+    void deleteAllByHouse(House house);
 }

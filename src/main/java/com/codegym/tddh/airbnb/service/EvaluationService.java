@@ -9,4 +9,5 @@ public interface EvaluationService {
     List<Evaluation> findAllByHouse(House house);
     void save(Evaluation evaluation);
     Evaluation findById(Long id);
+    void deleteAllByHouse(House house);
 }

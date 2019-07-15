@@ -22,4 +22,9 @@ public class ReplyServiceImpl implements ReplyService {
     public void save(Reply reply) {
         replyRepository.save(reply);
     }
+
+    @Override
+    public void deleteAllByEvaluation(Evaluation evaluation) {
+        replyRepository.deleteAllByEvaluation(evaluation);
+    }
 }

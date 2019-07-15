@@ -8,4 +8,5 @@ import java.util.List;
 public interface ReplyService {
     List<Reply> findAllByEvaluationOrderById(Evaluation evaluation);
     void save(Reply reply);
+    void deleteAllByEvaluation(Evaluation evaluation);
 }

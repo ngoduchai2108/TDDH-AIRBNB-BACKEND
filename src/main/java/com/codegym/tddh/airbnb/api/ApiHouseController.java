@@ -1,10 +1,12 @@
 package com.codegym.tddh.airbnb.api;
 
+import com.codegym.tddh.airbnb.model.Evaluation;
 import com.codegym.tddh.airbnb.model.House;
 import com.codegym.tddh.airbnb.model.User;
 import com.codegym.tddh.airbnb.payload.form.SearchHouseForm;
 import com.codegym.tddh.airbnb.payload.response.ResponseMessage;
 import com.codegym.tddh.airbnb.security.userDetailsImpl.UserPrinciple;
+import com.codegym.tddh.airbnb.service.EvaluationService;
 import com.codegym.tddh.airbnb.service.HouseService;
 import com.codegym.tddh.airbnb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class ApiHouseController {
 
     @Autowired
     HouseService houseService;
+    @Autowired
+    EvaluationService evaluationService;
 
     //----------------------Get All House----------------------------
     @GetMapping("/houses")
@@ -125,6 +129,7 @@ public class ApiHouseController {
         if (house.getRented())
             return new ResponseEntity<>(new ResponseMessage("Please Delete All Booking of this house first"),
                     HttpStatus.BAD_REQUEST);
+        evaluationService.deleteAllByHouse(house);
         houseService.remove(id);
         return new ResponseEntity<House>(HttpStatus.OK);
     }

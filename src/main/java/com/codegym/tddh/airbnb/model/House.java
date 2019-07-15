@@ -27,7 +27,7 @@ public class House {
     private Boolean isRented;
 
     @NotBlank
-    @Size(min = 10, max = 100)
+    @Size(min = 10)
     private String description;
 
     private Double price;

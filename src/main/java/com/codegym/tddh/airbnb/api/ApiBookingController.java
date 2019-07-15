@@ -31,7 +31,7 @@ public class ApiBookingController {
     @PostMapping("/{id}")
     public ResponseEntity<?> bookAHouse(@Valid @RequestBody Booking booking,
                                         @PathVariable("id") Long id) {
-        User user = getUserByAuth();
+        User user = userService.getUserByAuth();
         House house = houseService.findById(id);
         if ((house == null || house.getRented())) {
             return new ResponseEntity<>(new ResponseMessage("House is deleted or rented"),
@@ -60,8 +60,17 @@ public class ApiBookingController {
 
     @GetMapping
     public ResponseEntity<List<Booking>> listBookingByUser() {
-        User user = getUserByAuth();
+        User user = userService.getUserByAuth();
         List<Booking> bookingList = bookingService.findAllByUser(user);
+        if (bookingList.isEmpty()) {
+            return new ResponseEntity<List<Booking>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
+    }
+    @GetMapping("/history")
+    public ResponseEntity<List<Booking>> listHistoryBookingByUser() {
+        User user = userService.getUserByAuth();
+        List<Booking> bookingList = bookingService.findAllHistoryByUser(user);
         if (bookingList.isEmpty()) {
             return new ResponseEntity<List<Booking>>(HttpStatus.NO_CONTENT);
         }
@@ -70,7 +79,7 @@ public class ApiBookingController {
 
     @GetMapping("/by-houses/{id}")
     public ResponseEntity<List<Booking>> listBookingByHouseId(@PathVariable Long id){
-        User user =getUserByAuth();
+        User user =userService.getUserByAuth();
         House house = houseService.findById(id);
         if (!house.getUser().getId().equals(user.getId())){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -85,7 +94,7 @@ public class ApiBookingController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> cancelBooking(@PathVariable Long id) {
         Booking booking = bookingService.findById(id);
-        User user = getUserByAuth();
+        User user = userService.getUserByAuth();
         if (!(user.getId().equals(booking.getUser().getId())))return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         if (bookingService.userCanCancelBooking(booking.getStartDate())) {
             bookingService.remove(booking);
@@ -102,7 +111,7 @@ public class ApiBookingController {
     public ResponseEntity<?>houseOwnerRemoveBooking(@PathVariable Long id){
         Booking booking = bookingService.findById(id);
         House house = booking.getHouse();
-        User user = getUserByAuth();
+        User user = userService.getUserByAuth();
         if(house.getUser().getId().equals(user.getId())){
             bookingService.remove(booking);
             house.setRented(false);
@@ -111,10 +120,19 @@ public class ApiBookingController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
-
-    private User getUserByAuth() {
-        Object userPrinciple = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long user_id = ((UserPrinciple) userPrinciple).getId();
-        return userService.findById(user_id);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> upDateCheckInBooking(@PathVariable("id") Long id) {
+        Booking booking = bookingService.findById(id);
+        if (booking == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        bookingService.upDateCheckIn(booking);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
+
+//    private User getUserByAuth() {
+//        Object userPrinciple = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Long user_id = ((UserPrinciple) userPrinciple).getId();
+//        return userService.findById(user_id);
+//    }
 }

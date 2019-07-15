@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Service
@@ -26,6 +27,53 @@ public class BookingServiceImpl implements BookingService {
     public List<Booking> findAllByHouse(House house){
         return bookingRepository.findAllByHouse(house);
     }
+
+    @Override
+    public List<Booking> findAllByHouseAndMonth(House house, String month, String year) {
+        List<Booking> allBookingByHouse = bookingRepository.findAllByHouse(house);
+        List<Booking> bookingList = new ArrayList<>();
+        for (Booking booking: allBookingByHouse) {
+            if (booking.getStartDate().substring(0,4).equals(year)&&booking.getStartDate().substring(5,7).equals(month)){
+                bookingList.add(booking);
+            }
+        }
+        return bookingList;
+    }
+
+    @Override
+    public List<Booking> findAllHistoryByUser(User user) {
+        List<Booking>listAllBooking=bookingRepository.findAllByUser(user);
+        List<Booking>bookingListHistory = new ArrayList<Booking>();
+        for (Booking booking:listAllBooking) {
+            if (parseStringToDate(booking.getEndDate()).getTime()< new Date().getTime()){
+                bookingListHistory.add(booking);
+            }
+
+        }
+        return bookingListHistory;
+    }
+
+    @Override
+    public Date parseStringToDate(String dateStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = sdf.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    @Override
+    public void upDateCheckIn(Booking booking) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date now = new Date();
+        String checkIn= sdf.format(now);
+        booking.setCheckIn(checkIn);
+        bookingRepository.save(booking);
+    }
+
     @Override
     public void save(Booking booking) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -12,6 +12,8 @@ public class Booking {
 
     private String oderDate;
 
+    private String checkIn;
+
     @NotBlank
     @Size(max = 50)
     private String startDate;
@@ -20,7 +22,7 @@ public class Booking {
     @Size(max = 50)
     private String endDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "house_id")
     private House house;
 
@@ -28,18 +30,14 @@ public class Booking {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "booking_id")
-    private Booking booking;
-
     public Booking() {
     }
 
-    public Booking(String oderDate, String startDate, String endDate, House house) {
+    public Booking(String oderDate, String checkIn, String startDate, String endDate) {
         this.oderDate = oderDate;
+        this.checkIn = checkIn;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.house = house;
     }
 
     public String getOderDate() {
@@ -90,11 +88,11 @@ public class Booking {
         this.id = id;
     }
 
-    public Booking getBooking() {
-        return booking;
+    public String getCheckIn() {
+        return checkIn;
     }
 
-    public void setBooking(Booking booking) {
-        this.booking = booking;
+    public void setCheckIn(String checkIn) {
+        this.checkIn = checkIn;
     }
 }

@@ -11,6 +11,7 @@ import com.codegym.tddh.airbnb.security.jwt.JwtProvider;
 import com.codegym.tddh.airbnb.service.RoleService;
 import com.codegym.tddh.airbnb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,12 +44,14 @@ public class AuthRestApi {
 
     @Autowired
     JwtProvider jwtProvider;
+    @Value( "${app.jwtSecret}")
+    private String salt;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()+salt));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -68,7 +71,7 @@ public class AuthRestApi {
 
         // Creating user's account
         User user = new User(signUpRequest.getFirstName(),signUpRequest.getLastName(),signUpRequest.getBirthday(),
-                signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
+                signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()+salt));
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
